@@ -3,8 +3,9 @@ A RESTful API built using Spring Boot for initial project.
 
 ## Table of Contents
 1. [Dependencies](#dependencies)
-2. [Insallation](#installation) 
-3. [Contact Information](#contactinformation)
+2. [Insallation](#installation)
+3. [Deployment](#deployment)
+4. [Contact Information](#contactinformation)
 
 ## Dependencies
 Core
@@ -30,5 +31,13 @@ Core
    ```bash
    ./mvn spring-boot:run
 
-   ## Contact Information
-   For any inquiries, contact me at [yhibmasorn@gmail.com](yhibmasorn@gmail.com), FB: Yhib Ma Sorn, Youtube: Yhib Ma Sorn
+## Deployment
+1. Build image.
+   ```bash
+   docker build -t initial_project_api .
+2. Run container.
+   ```bash
+   docker run -p 8080:8080 --name=initial_project_api initial_prject_api
+
+## Contact Information
+For any inquiries, contact me at [yhibmasorn@gmail.com](yhibmasorn@gmail.com), FB: Yhib Ma Sorn, Youtube: Yhib Ma Sorn
