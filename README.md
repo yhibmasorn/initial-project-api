@@ -37,7 +37,7 @@ Core
    docker build -t initial_project_api .
 2. Run container.
    ```bash
-   docker run -p 8080:8080 --name=initial_project_api initial_prject_api
+   docker run -p 8080:8080 --name=initial_project_api initial_project_api
 
 ## Contact Information
 For any inquiries, contact me at [yhibmasorn@gmail.com](yhibmasorn@gmail.com), FB: Yhib Ma Sorn, Youtube: Yhib Ma Sorn
