@@ -1,92 +1,11 @@
 {
 	"info": {
-		"_postman_id": "31db6f58-9b18-419c-b082-40830a94a283",
-		"name": "InitialProject - EP2_Spring_Boot_with_Authentication_and_Authorization",
+		"_postman_id": "41a74622-167d-4f4c-9b10-86d802f6b66a",
+		"name": "InitialProject - EP3_Spring_Boot_with_Pagination_Search",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "5925005"
 	},
 	"item": [
-		{
-			"name": "welcome",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "GET",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"username\" : \"maker1\",\r\n    \"password\" : \"P@ssw0rd\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8080/welcome",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"welcome"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "test exception",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "GET",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"username\" : \"maker1\",\r\n    \"password\" : \"P@ssw0rd\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8080/welcome/exception",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"welcome",
-						"exception"
-					]
-				}
-			},
-			"response": []
-		},
 		{
 			"name": "login",
 			"request": {
@@ -126,6 +45,53 @@
 			"response": []
 		},
 		{
+			"name": "welcome",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "04438454-5964-4023-a7fb-654ab8e7233e",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\" : \"maker1\",\r\n    \"password\" : \"P@ssw0rd\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/welcome",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"welcome"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "update permission",
 			"request": {
 				"auth": {
@@ -133,7 +99,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "307f7790-94d9-42cc-84a8-02baf02e131b",
+							"value": "a18d67f8-fb46-42c5-86bc-ef8852f5adf2",
 							"type": "string"
 						}
 					]
@@ -148,7 +114,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"roleNo\" : \"999\",\r\n    \"permissionNoList\" : [\"00101\",\"00102\",\"00103\",\"00104\",\"00201\",\"00202\"]\r\n}",
+					"raw": "{\r\n    \"roleNo\" : \"001\",\r\n    \"permissionNoList\" : [\"00101\",\"00102\",\"00103\",\"00104\",\"00201\",\"00202\"]\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -215,7 +181,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "5fb2c250-0359-4c4f-aa94-41552dee5d5f",
+							"value": "ea1c902f-8a42-466e-a1ee-b431e17a7cd7",
 							"type": "string"
 						}
 					]
@@ -294,6 +260,168 @@
 					"port": "8080",
 					"path": [
 						"roles"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get all users",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "2d85127b-d952-408e-9795-43e04be2885c",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "search users",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "f50826c8-4ca2-4430-b55e-7a93398015fc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/users/search?workStartDateFrom=01/01/2020&workStartDateTo=31/12/2020&size=10&page=2&sortField=workStartDate",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"users",
+						"search"
+					],
+					"query": [
+						{
+							"key": "employeeNo",
+							"value": "",
+							"disabled": true
+						},
+						{
+							"key": "firstnameTh",
+							"value": "",
+							"disabled": true
+						},
+						{
+							"key": "lastnameTh",
+							"value": "",
+							"disabled": true
+						},
+						{
+							"key": "firstnameEn",
+							"value": "",
+							"disabled": true
+						},
+						{
+							"key": "lastnameEn",
+							"value": "",
+							"disabled": true
+						},
+						{
+							"key": "username",
+							"value": "",
+							"disabled": true
+						},
+						{
+							"key": "roleName",
+							"value": "",
+							"disabled": true
+						},
+						{
+							"key": "workStartDateFrom",
+							"value": "01/01/2020"
+						},
+						{
+							"key": "workStartDateTo",
+							"value": "31/12/2020"
+						},
+						{
+							"key": "status",
+							"value": "Active",
+							"disabled": true
+						},
+						{
+							"key": "size",
+							"value": "10"
+						},
+						{
+							"key": "page",
+							"value": "2"
+						},
+						{
+							"key": "sortField",
+							"value": "workStartDate"
+						},
+						{
+							"key": "sortMode",
+							"value": "",
+							"disabled": true
+						}
 					]
 				}
 			},

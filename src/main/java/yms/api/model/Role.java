@@ -13,17 +13,17 @@ public class Role {
 	private Date updatedDate;
 	private String isDeleted;
 	
-	public Integer getRoleID() {
-		return roleID;
-	}
-	public void setRoleID(Integer roleID) {
-		this.roleID = roleID;
-	}
 	public String getRoleNo() {
 		return roleNo;
 	}
 	public void setRoleNo(String roleNo) {
 		this.roleNo = roleNo;
+	}
+	public Integer getRoleID() {
+		return roleID;
+	}
+	public void setRoleID(Integer roleID) {
+		this.roleID = roleID;
 	}
 	public String getRoleName() {
 		return roleName;

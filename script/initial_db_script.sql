@@ -1,159 +1,381 @@
-CREATE TABLE ENT_ROLE(
-  ROLE_ID INT NOT NULL AUTO_INCREMENT,
-  ROLE_NO VARCHAR(20) NOT NULL,
-  ROLE_NAME VARCHAR(50),
-  CREATED_BY VARCHAR(20),
-  CREATED_DATE DATETIME,
-  UPDATED_BY VARCHAR(20),
-  UPDATED_DATE DATETIME,
-  IS_DELETED CHAR,
-  PRIMARY KEY(ROLE_ID)
-);
+CREATE TABLE IF NOT EXISTS `ENT_ROLE` (
+  `ROLE_ID` int NOT NULL AUTO_INCREMENT,
+  `ROLE_NO` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ROLE_NAME` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `CREATED_BY` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `CREATED_DATE` datetime DEFAULT NULL,
+  `UPDATED_BY` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `UPDATED_DATE` datetime DEFAULT NULL,
+  `IS_DELETED` char(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`ROLE_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE ENT_EMPLOYEE(
-  EMPLOYEE_ID INT NOT NULL AUTO_INCREMENT,
-  EMPLOYEE_NO VARCHAR(20) NOT NULL,
-  FIRSTNAME VARCHAR(50),
-  LASTNAME VARCHAR(50),
-  ROLE_ID INT,
-  CREATED_BY VARCHAR(20),
-  CREATED_DATE DATETIME,
-  UPDATED_BY VARCHAR(20),
-  UPDATED_DATE DATETIME,
-  IS_DELETED CHAR,
-  PRIMARY KEY(EMPLOYEE_ID),
-  FOREIGN KEY (ROLE_ID) REFERENCES ENT_ROLE(ROLE_ID)
-);
+CREATE TABLE IF NOT EXISTS `ENT_EMPLOYEE` (
+  `EMPLOYEE_ID` int NOT NULL AUTO_INCREMENT,
+  `EMPLOYEE_NO` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `TITLE_TH` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `TITLE_EN` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `FIRSTNAME_TH` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `LASTNAME_TH` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `FIRSTNAME_EN` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `LASTNAME_EN` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ROLE_ID` int DEFAULT NULL,
+  `WORK_START_DATE` date DEFAULT NULL,
+  `CREATED_BY` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `CREATED_DATE` datetime DEFAULT NULL,
+  `UPDATED_BY` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `UPDATED_DATE` datetime DEFAULT NULL,
+  `IS_DELETED` char(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`EMPLOYEE_ID`),
+  KEY `ROLE_ID` (`ROLE_ID`),
+  CONSTRAINT `ENT_EMPLOYEE_ibfk_1` FOREIGN KEY (`ROLE_ID`) REFERENCES `ENT_ROLE` (`ROLE_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=100009 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE ENT_USER_LOGIN(
-  USER_LOGIN_ID INT NOT NULL AUTO_INCREMENT,
-  USERNAME VARCHAR(50) NOT NULL,
-  PASSWORD VARCHAR(300) NOT NULL,
-  EMPLOYEE_ID INT NOT NULL,
-  CREATED_BY VARCHAR(20),
-  CREATED_DATE DATETIME,
-  UPDATED_BY VARCHAR(20),
-  UPDATED_DATE DATETIME,
-  IS_DELETED CHAR,
-  PRIMARY KEY(USER_LOGIN_ID),
-  FOREIGN KEY (EMPLOYEE_ID) REFERENCES ENT_EMPLOYEE(EMPLOYEE_ID)
-);
+CREATE TABLE IF NOT EXISTS `ENT_USER_LOGIN` (
+  `USER_LOGIN_ID` int NOT NULL AUTO_INCREMENT,
+  `USERNAME` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `PASSWORD` varchar(300) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `EMPLOYEE_ID` int NOT NULL,
+  `STATUS` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `CREATED_BY` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `CREATED_DATE` datetime DEFAULT NULL,
+  `UPDATED_BY` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `UPDATED_DATE` datetime DEFAULT NULL,
+  `IS_DELETED` char(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`USER_LOGIN_ID`),
+  KEY `EMPLOYEE_ID` (`EMPLOYEE_ID`),
+  CONSTRAINT `ENT_USER_LOGIN_ibfk_1` FOREIGN KEY (`EMPLOYEE_ID`) REFERENCES `ENT_EMPLOYEE` (`EMPLOYEE_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=100000 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE ENT_SESSION(
-  SESSION_ID VARCHAR(100) NOT NULL,
-  USER_LOGIN_ID INT NOT NULL,
-  EXPIRE_DATE DATETIME NOT NULL,
-  CREATED_BY VARCHAR(20),
-  CREATED_DATE DATETIME,
-  UPDATED_BY VARCHAR(20),
-  UPDATED_DATE DATETIME,
-  IS_DELETED CHAR,
-  PRIMARY KEY(SESSION_ID),
-  FOREIGN KEY (USER_LOGIN_ID) REFERENCES ENT_USER_LOGIN(USER_LOGIN_ID)
-);
+CREATE TABLE IF NOT EXISTS `ENT_SESSION` (
+  `SESSION_ID` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `USER_LOGIN_ID` int NOT NULL,
+  `EXPIRE_DATE` datetime NOT NULL,
+  `CREATED_BY` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `CREATED_DATE` datetime DEFAULT NULL,
+  `UPDATED_BY` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `UPDATED_DATE` datetime DEFAULT NULL,
+  `IS_DELETED` char(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`SESSION_ID`),
+  KEY `USER_LOGIN_ID` (`USER_LOGIN_ID`),
+  CONSTRAINT `ENT_SESSION_ibfk_1` FOREIGN KEY (`USER_LOGIN_ID`) REFERENCES `ENT_USER_LOGIN` (`USER_LOGIN_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE MAS_PERMISSION_ACTION(
-  PERMISSION_ACTION_ID INT NOT NULL AUTO_INCREMENT,
-  PERMISSION_ACTION_NO VARCHAR(5) NOT NULL,
-  PERMISSION_ACTION_NAME VARCHAR(50),
-  CREATED_BY VARCHAR(20),
-  CREATED_DATE DATETIME,
-  UPDATED_BY VARCHAR(20),
-  UPDATED_DATE DATETIME,
-  IS_DELETED CHAR,
-  PRIMARY KEY(PERMISSION_ACTION_ID)
-);
+CREATE TABLE IF NOT EXISTS `MAS_MENU` (
+  `MENU_ID` int NOT NULL AUTO_INCREMENT,
+  `MENU_NO` varchar(5) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `MENU_NAME` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `CREATED_BY` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `CREATED_DATE` datetime DEFAULT NULL,
+  `UPDATED_BY` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `UPDATED_DATE` datetime DEFAULT NULL,
+  `IS_DELETED` char(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`MENU_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE MAS_MENU(
-  MENU_ID INT NOT NULL AUTO_INCREMENT,
-  MENU_NO VARCHAR(5) NOT NULL,
-  MENU_NAME VARCHAR(50),
-  CREATED_BY VARCHAR(20),
-  CREATED_DATE DATETIME,
-  UPDATED_BY VARCHAR(20),
-  UPDATED_DATE DATETIME,
-  IS_DELETED CHAR,
-  PRIMARY KEY(MENU_ID)
-);
+CREATE TABLE IF NOT EXISTS `MAS_PERMISSION_ACTION` (
+  `PERMISSION_ACTION_ID` int NOT NULL AUTO_INCREMENT,
+  `PERMISSION_ACTION_NO` varchar(5) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `PERMISSION_ACTION_NAME` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `CREATED_BY` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `CREATED_DATE` datetime DEFAULT NULL,
+  `UPDATED_BY` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `UPDATED_DATE` datetime DEFAULT NULL,
+  `IS_DELETED` char(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`PERMISSION_ACTION_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE MAP_ROLE_PERMISSION(
-  ROLE_PERMISSION_ID INT NOT NULL AUTO_INCREMENT,
-  ROLE_ID INT NOT NULL,
-  MENU_ID INT NOT NULL,
-  PERMISSION_ACTION_ID INT NOT NULL,
-  CREATED_BY VARCHAR(20),
-  CREATED_DATE DATETIME,
-  UPDATED_BY VARCHAR(20),
-  UPDATED_DATE DATETIME,
-  IS_DELETED CHAR,
-  PRIMARY KEY(ROLE_PERMISSION_ID),
-  FOREIGN KEY (ROLE_ID) REFERENCES ENT_ROLE(ROLE_ID),
-  FOREIGN KEY (MENU_ID) REFERENCES MAS_MENU(MENU_ID),
-  FOREIGN KEY (PERMISSION_ACTION_ID) REFERENCES MAS_PERMISSION_ACTION(PERMISSION_ACTION_ID)
-);
+CREATE TABLE IF NOT EXISTS `MAP_ROLE_PERMISSION` (
+  `ROLE_PERMISSION_ID` int NOT NULL AUTO_INCREMENT,
+  `ROLE_ID` int NOT NULL,
+  `MENU_ID` int NOT NULL,
+  `PERMISSION_ACTION_ID` int NOT NULL,
+  `CREATED_BY` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `CREATED_DATE` datetime DEFAULT NULL,
+  `UPDATED_BY` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `UPDATED_DATE` datetime DEFAULT NULL,
+  `IS_DELETED` char(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`ROLE_PERMISSION_ID`),
+  KEY `ROLE_ID` (`ROLE_ID`),
+  KEY `MENU_ID` (`MENU_ID`),
+  KEY `PERMISSION_ACTION_ID` (`PERMISSION_ACTION_ID`),
+  CONSTRAINT `MAP_ROLE_PERMISSION_ibfk_1` FOREIGN KEY (`ROLE_ID`) REFERENCES `ENT_ROLE` (`ROLE_ID`),
+  CONSTRAINT `MAP_ROLE_PERMISSION_ibfk_2` FOREIGN KEY (`MENU_ID`) REFERENCES `MAS_MENU` (`MENU_ID`),
+  CONSTRAINT `MAP_ROLE_PERMISSION_ibfk_3` FOREIGN KEY (`PERMISSION_ACTION_ID`) REFERENCES `MAS_PERMISSION_ACTION` (`PERMISSION_ACTION_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE MAS_INITIAL_PERMISSION (
-  INITIAL_PERMISSION_ID INT NOT NULL AUTO_INCREMENT,
-  MENU_ID INT NOT NULL,
-  PERMISSION_ACTION_ID INT NOT NULL,
-  CREATED_BY VARCHAR(20),
-  CREATED_DATE DATETIME,
-  UPDATED_BY VARCHAR(20),
-  UPDATED_DATE DATETIME,
-  IS_DELETED CHAR,
-  PRIMARY KEY(INITIAL_PERMISSION_ID)
-);
+CREATE TABLE IF NOT EXISTS `MAS_INITIAL_PERMISSION` (
+  `INITIAL_PERMISSION_ID` int NOT NULL AUTO_INCREMENT,
+  `MENU_ID` int NOT NULL,
+  `PERMISSION_ACTION_ID` int NOT NULL,
+  `CREATED_BY` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `CREATED_DATE` datetime DEFAULT NULL,
+  `UPDATED_BY` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `UPDATED_DATE` datetime DEFAULT NULL,
+  `IS_DELETED` char(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`INITIAL_PERMISSION_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-INSERT INTO ENT_ROLE (ROLE_ID, ROLE_NO, ROLE_NAME, CREATED_BY, CREATED_DATE, UPDATED_BY, UPDATED_DATE, IS_DELETED) VALUES(1, '001', 'Maker', 'SYSTEM', current_timestamp, null, null, 'N');
-INSERT INTO ENT_ROLE (ROLE_ID, ROLE_NO, ROLE_NAME, CREATED_BY, CREATED_DATE, UPDATED_BY, UPDATED_DATE, IS_DELETED) VALUES(2, '002', 'Checker', 'SYSTEM', current_timestamp, null, null, 'N');
-INSERT INTO ENT_ROLE (ROLE_ID, ROLE_NO, ROLE_NAME, CREATED_BY, CREATED_DATE, UPDATED_BY, UPDATED_DATE, IS_DELETED) VALUES(3, '003', 'Approver', 'SYSTEM', current_timestamp, null, null, 'N');
-INSERT INTO ENT_ROLE (ROLE_ID, ROLE_NO, ROLE_NAME, CREATED_BY, CREATED_DATE, UPDATED_BY, UPDATED_DATE, IS_DELETED) VALUES(4, '004', 'Administrator', 'SYSTEM', current_timestamp, null, null, 'N');
+INSERT INTO `ENT_ROLE` (`ROLE_ID`, `ROLE_NO`, `ROLE_NAME`, `CREATED_BY`, `CREATED_DATE`, `UPDATED_BY`, `UPDATED_DATE`, `IS_DELETED`) VALUES
+	(1, '001', 'Maker', 'SYSTEM', '2024-12-19 17:43:16', NULL, NULL, 'N'),
+	(2, '002', 'Checker', 'SYSTEM', '2024-12-19 17:43:16', NULL, NULL, 'N'),
+	(3, '003', 'Approver', 'SYSTEM', '2024-12-19 17:43:16', NULL, NULL, 'N'),
+	(4, '004', 'Administrator', 'SYSTEM', '2024-12-19 17:43:16', NULL, NULL, 'N');
 
-INSERT INTO ENT_EMPLOYEE (EMPLOYEE_ID, EMPLOYEE_NO, FIRSTNAME, LASTNAME, ROLE_ID, CREATED_BY, CREATED_DATE, UPDATED_BY, UPDATED_DATE, IS_DELETED) VALUES(1, '000001', 'Maker 1', 'Maker Lastname 1', 1, 'SYSTEM', current_timestamp, null, null, 'N');
-INSERT INTO ENT_EMPLOYEE (EMPLOYEE_ID, EMPLOYEE_NO, FIRSTNAME, LASTNAME, ROLE_ID, CREATED_BY, CREATED_DATE, UPDATED_BY, UPDATED_DATE, IS_DELETED) VALUES(2, '000002', 'Checker 1', 'Checker Lastname 1', 2, 'SYSTEM', current_timestamp, null, null, 'N');
-INSERT INTO ENT_EMPLOYEE (EMPLOYEE_ID, EMPLOYEE_NO, FIRSTNAME, LASTNAME, ROLE_ID, CREATED_BY, CREATED_DATE, UPDATED_BY, UPDATED_DATE, IS_DELETED) VALUES(3, '000003', 'Approver 1', 'Approver Lastname 1', 3, 'SYSTEM', current_timestamp, null, null, 'N');
-INSERT INTO ENT_EMPLOYEE (EMPLOYEE_ID, EMPLOYEE_NO, FIRSTNAME, LASTNAME, ROLE_ID, CREATED_BY, CREATED_DATE, UPDATED_BY, UPDATED_DATE, IS_DELETED) VALUES(4, '000004', 'Administrator 1', 'Administrator Lastname 1', 4, 'SYSTEM', current_timestamp, null, null, 'N');
+INSERT INTO `ENT_EMPLOYEE` (`EMPLOYEE_ID`, `EMPLOYEE_NO`, `TITLE_TH`, `TITLE_EN`, `FIRSTNAME_TH`, `LASTNAME_TH`, `FIRSTNAME_EN`, `LASTNAME_EN`, `ROLE_ID`, `WORK_START_DATE`, `CREATED_BY`, `CREATED_DATE`, `UPDATED_BY`, `UPDATED_DATE`, `IS_DELETED`) VALUES
+	(1, '000001', 'นาย', 'Mr.', 'เมเกอร์ 1', 'เมเกอร์ 1 นามสกุล', 'Maker 1', 'Maker 1 Lastname', 1, '2015-01-01', 'SYSTEM', '2024-12-19 17:44:26', NULL, NULL, 'N'),
+	(2, '000002', 'นางสาว', 'Miss', 'เช็คเกอร์ 1', 'เช็คเกอร์ 1 นามสกุล', 'Checker 1', 'Checker 1 Lastname', 2, '2015-01-01', 'SYSTEM', '2024-12-19 18:13:40', NULL, NULL, 'N'),
+	(3, '000003', 'นาง', 'Mrs.', 'แอฟฟูฟเวอร์ 1', 'แอฟฟูฟเวอร์ 1 นามสกุล', 'Approver 1', 'Approver 1 Lastname', 3, '2015-01-01', 'SYSTEM', '2024-12-19 18:13:40', NULL, NULL, 'N'),
+	(4, '000004', 'นาย', 'Mr.', 'แอดมินนิสเตเตอร์ 1', 'แอดมินนิสเตเตอร์ 1 นามสกุล', 'Administrator 1', 'Administrator 1 Lastname', 4, '2015-01-01', 'SYSTEM', '2024-12-19 18:13:40', NULL, NULL, 'N'),
+	(5, '000005', 'นางสาว', 'Ms.', 'พุทธิพงษ์', 'บุนยาภิสนท์', 'Putthipong', 'Bunyaphisan', 1, '2024-01-21', 'SYSTEM', '2024-12-20 15:54:41', NULL, NULL, 'N'),
+	(6, '000006', 'นางสาว', 'Ms.', 'ศจีกาญจน์', 'Alexander', 'Sajikan', 'Alexander', 1, '2021-07-13', 'SYSTEM', '2024-12-20 15:54:41', NULL, NULL, 'N'),
+	(7, '000007', 'นาย', 'Mr.', 'สมเกียรติ', 'ฉัพพรรณธนกูร', 'Somkiat', 'Chaphanthanakun', 1, '2024-02-21', 'SYSTEM', '2024-12-20 15:54:41', NULL, NULL, 'N'),
+	(8, '000008', 'นางสาว', 'Ms.', 'Jacqueline', 'Jones', 'Jacqueline', 'Jones', 2, '2021-05-31', 'SYSTEM', '2024-12-20 15:54:41', NULL, NULL, 'N'),
+	(9, '000009', 'นาง', 'Mrs.', 'ณัฐญาดา', 'Schmidt', 'Nathayada', 'Schmidt', 3, '2020-10-02', 'SYSTEM', '2024-12-20 15:54:41', NULL, NULL, 'N'),
+	(10, '000010', 'นาง', 'Mrs.', 'อัษฏา', 'ทวีเดช', 'Astha', 'Thaweedet', 1, '2024-10-28', 'SYSTEM', '2024-12-20 15:54:41', NULL, NULL, 'N'),
+	(11, '000011', 'นางสาว', 'Ms.', 'Jeffrey', 'Rivera', 'Jeffrey', 'Rivera', 2, '2021-05-31', 'SYSTEM', '2024-12-20 15:54:41', NULL, NULL, 'N'),
+	(12, '000012', 'นาง', 'Mrs.', 'กะดิรัตน์', 'Mckee', 'Kadirat', 'Mckee', 1, '2024-02-12', 'SYSTEM', '2024-12-20 15:54:41', NULL, NULL, 'N'),
+	(13, '000013', 'นางสาว', 'Ms.', 'Daniel', 'ถนัดเดินข่าว', 'Daniel', 'Thnad Dein Khaw', 3, '2021-09-14', 'SYSTEM', '2024-12-20 15:54:41', NULL, NULL, 'N'),
+	(14, '000014', 'นางสาว', 'Ms.', 'Sandra', 'Sheppard', 'Sandra', 'Sheppard', 1, '2024-12-14', 'SYSTEM', '2024-12-20 15:54:41', NULL, NULL, 'N'),
+	(15, '000015', 'นางสาว', 'Ms.', 'วิถี', 'บุนยะศัพท์', 'Withi', 'Bunyasap', 2, '2022-06-09', 'SYSTEM', '2024-12-20 15:54:41', NULL, NULL, 'N'),
+	(16, '000016', 'นางสาว', 'Ms.', 'ราชัน', 'พรรษาสกุล', 'Rachan', 'Phansakul', 2, '2024-04-25', 'SYSTEM', '2024-12-20 15:54:41', NULL, NULL, 'N'),
+	(17, '000017', 'นาย', 'Mr.', 'วิถี', 'Reed', 'Withi', 'Reed', 1, '2022-04-23', 'SYSTEM', '2024-12-20 15:54:41', NULL, NULL, 'N'),
+	(18, '000018', 'นาง', 'Mrs.', 'Jessica', 'Allen', 'Jessica', 'Allen', 1, '2023-07-09', 'SYSTEM', '2024-12-20 15:54:41', NULL, NULL, 'N'),
+	(19, '000019', 'นาง', 'Mrs.', 'ฟิรยา', 'Thompson', 'Firaiya', 'Thompson', 1, '2024-03-20', 'SYSTEM', '2024-12-20 15:54:41', NULL, NULL, 'N'),
+	(20, '000020', 'นางสาว', 'Ms.', 'เพ็ญพรรษา', 'ธนรักษ์', 'Pheypunsa', 'Thanarak', 3, '2020-03-08', 'SYSTEM', '2024-12-20 15:54:41', NULL, NULL, 'N'),
+	(21, '000021', 'นาย', 'Mr.', 'ศิริญา', 'Rivera', 'Siriya', 'Rivera', 2, '2023-10-28', 'SYSTEM', '2024-12-20 15:54:41', NULL, NULL, 'N'),
+	(22, '000022', 'นาง', 'Mrs.', 'เถลิงยศ', 'Watkins', 'Thelingyot', 'Watkins', 3, '2020-12-09', 'SYSTEM', '2024-12-20 15:54:41', NULL, NULL, 'N'),
+	(23, '000023', 'นางสาว', 'Ms.', 'อริสรา', 'Cox', 'Arisara', 'Cox', 1, '2024-02-14', 'SYSTEM', '2024-12-20 15:54:41', NULL, NULL, 'N'),
+	(24, '000024', 'นางสาว', 'Ms.', 'คมกริบ', 'Gardner', 'Komkrib', 'Gardner', 1, '2021-06-28', 'SYSTEM', '2024-12-20 15:54:41', NULL, NULL, 'N'),
+	(25, '000025', 'นาย', 'Mr.', 'ยุภา', 'นาคพันธุ์', 'Yupha', 'Nagapan', 2, '2020-11-22', 'SYSTEM', '2024-12-20 15:54:42', NULL, NULL, 'N'),
+	(26, '000026', 'นาย', 'Mr.', 'Wesley', 'Jenkins', 'Wesley', 'Jenkins', 1, '2024-09-30', 'SYSTEM', '2024-12-20 15:54:42', NULL, NULL, 'N'),
+	(27, '000027', 'นาง', 'Mrs.', 'ราชันทร์', 'ทันยุค', 'Rachan', 'Thanyuk', 4, '2024-07-11', 'SYSTEM', '2024-12-20 15:54:42', NULL, NULL, 'N'),
+	(28, '000028', 'นาย', 'Mr.', 'Tammy', 'ธรรมสถิตไพศาล', 'Tammy', 'Thammasathitpaisarn', 1, '2021-02-23', 'SYSTEM', '2024-12-20 15:54:42', NULL, NULL, 'N'),
+	(29, '000029', 'นางสาว', 'Ms.', 'รอซีด๊ะ', 'Spencer', 'Raseeda', 'Spencer', 2, '2021-12-12', 'SYSTEM', '2024-12-20 15:54:42', NULL, NULL, 'N'),
+	(30, '000030', 'นาง', 'Mrs.', 'ฮามีย๊ะ', 'Hughes', 'Hameeya', 'Hughes', 1, '2024-05-20', 'SYSTEM', '2024-12-20 15:54:42', NULL, NULL, 'N'),
+	(31, '000031', 'นาง', 'Mrs.', 'Natalie', 'Franco', 'Natalie', 'Franco', 3, '2021-03-04', 'SYSTEM', '2024-12-20 15:54:55', NULL, NULL, 'N'),
+	(32, '000032', 'นางสาว', 'Ms.', 'มูฮำมัด', 'Medina', 'Muhammad', 'Medina', 1, '2022-04-28', 'SYSTEM', '2024-12-20 15:54:55', NULL, NULL, 'N'),
+	(33, '000033', 'นาย', 'Mr.', 'กิติวัฒน์', 'ฉัพพรรณธนกูร', 'Kitiwat', 'Chaphanthanakun', 1, '2023-08-17', 'SYSTEM', '2024-12-20 15:54:55', NULL, NULL, 'N'),
+	(34, '000034', 'นาง', 'Mrs.', 'Brett', 'ไม้แดง', 'Brett', 'Midaeng', 1, '2024-03-01', 'SYSTEM', '2024-12-20 15:54:55', NULL, NULL, 'N'),
+	(35, '000035', 'นางสาว', 'Ms.', 'Amy', 'Herring', 'Amy', 'Herring', 2, '2023-10-06', 'SYSTEM', '2024-12-20 15:54:55', NULL, NULL, 'N'),
+	(36, '000036', 'นาง', 'Mrs.', 'Thomas', 'ตันยา', 'Thomas', 'Tanya', 1, '2023-10-14', 'SYSTEM', '2024-12-20 15:54:55', NULL, NULL, 'N'),
+	(37, '000037', 'นาย', 'Mr.', 'วีระวัฒน์', 'วิลาสินี', 'Wirawat', 'Vilasini', 3, '2020-11-24', 'SYSTEM', '2024-12-20 15:54:56', NULL, NULL, 'N'),
+	(38, '000038', 'นางสาว', 'Ms.', 'จิม', 'Brooks', 'Jim', 'Brooks', 1, '2021-01-21', 'SYSTEM', '2024-12-20 15:54:56', NULL, NULL, 'N'),
+	(39, '000039', 'นาย', 'Mr.', 'กวีฉัฏฐ', 'บุญญาภิรมย์', 'Kawichatt', 'Boonyapirom', 2, '2024-12-01', 'SYSTEM', '2024-12-20 15:54:56', NULL, NULL, 'N'),
+	(40, '000040', 'นาง', 'Mrs.', 'Teresa', 'ธรรมนิยม', 'Teresa', 'Dhamma Niyom', 1, '2021-07-09', 'SYSTEM', '2024-12-20 15:54:56', NULL, NULL, 'N'),
+	(41, '000041', 'นาง', 'Mrs.', 'Oscar', 'แนวพนิช', 'Oscar', 'Naew phnich', 3, '2020-01-05', 'SYSTEM', '2024-12-20 15:54:56', NULL, NULL, 'N'),
+	(42, '000042', 'นางสาว', 'Ms.', 'ปรมินทร์', 'Turner', 'Pramint', 'Turner', 2, '2022-07-10', 'SYSTEM', '2024-12-20 15:54:56', NULL, NULL, 'N'),
+	(43, '000043', 'นาง', 'Mrs.', 'ชัญญานุนาย', 'Nelson', 'Chanyanunai', 'Nelson', 1, '2022-11-04', 'SYSTEM', '2024-12-20 15:54:56', NULL, NULL, 'N'),
+	(44, '000044', 'นางสาว', 'Ms.', 'ธนวันต์', 'Madden', 'Thanawan', 'Madden', 1, '2022-11-04', 'SYSTEM', '2024-12-20 15:54:56', NULL, NULL, 'N'),
+	(45, '000045', 'นาย', 'Mr.', 'จรรยพร', 'Gibbs', 'Chanyaporn', 'Gibbs', 2, '2022-03-08', 'SYSTEM', '2024-12-20 15:54:56', NULL, NULL, 'N'),
+	(46, '000046', 'นาง', 'Mrs.', 'เถลิงยศ', 'Roach', 'Theling', 'Roach', 2, '2020-05-31', 'SYSTEM', '2024-12-20 15:54:56', NULL, NULL, 'N'),
+	(47, '000047', 'นาง', 'Mrs.', 'ยศ', 'Acha', 'Yot', 'Acha', 2, '2020-04-30', 'SYSTEM', '2024-12-20 15:54:56', NULL, NULL, 'N'),
+	(48, '000048', 'นาง', 'Mrs.', 'Kelsey', 'Moore', 'Kelsey', 'Moore', 3, '2021-09-13', 'SYSTEM', '2024-12-20 15:54:56', NULL, NULL, 'N'),
+	(49, '000049', 'นาง', 'Mrs.', 'Chad', 'ราชมณี', 'Chad', 'Rajmani', 1, '2024-12-04', 'SYSTEM', '2024-12-20 15:54:56', NULL, NULL, 'N'),
+	(50, '000050', 'นาง', 'Mrs.', 'Sarah', 'Wilson', 'Sarah', 'Wilson', 1, '2021-07-08', 'SYSTEM', '2024-12-20 15:54:56', NULL, NULL, 'N'),
+	(51, '000051', 'นางสาว', 'Ms.', 'John', 'เธียรายัน', 'John', 'Thiarayan', 1, '2023-12-28', 'SYSTEM', '2024-12-20 15:54:56', NULL, NULL, 'N'),
+	(52, '000052', 'นาย', 'Mr.', 'สมหมาย', 'Patterson', 'Sommai', 'Patterson', 2, '2021-02-01', 'SYSTEM', '2024-12-20 15:54:56', NULL, NULL, 'N'),
+	(53, '000053', 'นาง', 'Mrs.', 'Brittany', 'แนวพญา', 'Brittany', 'Naewphaya', 4, '2023-05-06', 'SYSTEM', '2024-12-20 15:54:56', NULL, NULL, 'N'),
+	(54, '000054', 'นางสาว', 'Ms.', 'Brian', 'James', 'Brian', 'James', 3, '2020-09-02', 'SYSTEM', '2024-12-20 15:54:56', NULL, NULL, 'N'),
+	(55, '000055', 'นาย', 'Mr.', 'Andre', 'Morales', 'Andre', 'Morales', 3, '2020-07-21', 'SYSTEM', '2024-12-20 15:54:56', NULL, NULL, 'N'),
+	(56, '000056', 'นาง', 'Mrs.', 'Melanie', 'Zamora', 'Melanie', 'Zamora', 1, '2022-08-30', 'SYSTEM', '2024-12-20 15:54:56', NULL, NULL, 'N'),
+	(57, '000057', 'นาง', 'Mrs.', 'วรศาสส์', 'นามขำ', 'Worasat', 'Namkam', 2, '2021-12-11', 'SYSTEM', '2024-12-20 15:54:56', NULL, NULL, 'N'),
+	(58, '000058', 'นาย', 'Mr.', 'พลภูมิ', 'ทองสีไพล', 'Phonphum', 'Thongsriprai', 1, '2021-09-05', 'SYSTEM', '2024-12-20 15:54:56', NULL, NULL, 'N'),
+	(59, '000059', 'นาย', 'Mr.', 'ธนกิตต์', 'Whitehead', 'Thanakit', 'Whitehead', 2, '2023-07-07', 'SYSTEM', '2024-12-20 15:54:56', NULL, NULL, 'N'),
+	(60, '000060', 'นาง', 'Mrs.', 'ธมลพรรณ', 'ตั้งกุลงาม', 'Thamonphan', 'Tangkulngam', 1, '2024-02-25', 'SYSTEM', '2024-12-20 15:54:56', NULL, NULL, 'N'),
+	(61, '000061', 'นางสาว', 'Ms.', 'Paul', 'Dougherty', 'Paul', 'Dougherty', 2, '2023-12-17', 'SYSTEM', '2024-12-20 15:54:56', NULL, NULL, 'N'),
+	(62, '000062', 'นาย', 'Mr.', 'Matthew', 'ทวนไชย์', 'Matthew', 'Thuan Chai', 1, '2023-04-23', 'SYSTEM', '2024-12-20 15:54:56', NULL, NULL, 'N'),
+	(63, '000063', 'นาย', 'Mr.', 'กุลเชษฐ', 'บุญญาภิรมย์', 'Kulchet', 'Boonyapirom', 3, '2020-01-25', 'SYSTEM', '2024-12-20 15:54:56', NULL, NULL, 'N'),
+	(64, '000064', 'นางสาว', 'Ms.', 'Ashley', 'หนักแน่น', 'Ashley', 'Hnaknaen', 1, '2022-03-28', 'SYSTEM', '2024-12-20 15:54:56', NULL, NULL, 'N'),
+	(65, '000065', 'นาย', 'Mr.', 'สมใจ', 'Ross', 'Somjai', 'Ross', 1, '2022-09-04', 'SYSTEM', '2024-12-20 15:54:56', NULL, NULL, 'N'),
+	(66, '000066', 'นาย', 'Mr.', 'พงษ์นเรศ', 'นิระหานี', 'Phong Nares', 'Nirahani', 1, '2024-05-03', 'SYSTEM', '2024-12-20 15:54:56', NULL, NULL, 'N'),
+	(67, '000067', 'นางสาว', 'Ms.', 'ดารุนี', 'Miller', 'Daruni', 'Miller', 1, '2023-06-29', 'SYSTEM', '2024-12-20 15:54:56', NULL, NULL, 'N'),
+	(68, '000068', 'นาย', 'Mr.', 'จริยฉัตร', 'พรรษาสกุล', 'Chariyachat', 'Pansakul', 1, '2024-02-27', 'SYSTEM', '2024-12-20 15:54:56', NULL, NULL, 'N'),
+	(69, '000069', 'นาง', 'Mrs.', 'Anne', 'Newman', 'Anne', 'Newman', 1, '2022-02-03', 'SYSTEM', '2024-12-20 15:54:56', NULL, NULL, 'N'),
+	(70, '000070', 'นาง', 'Mrs.', 'พิมพ์ประภา', 'Ibarra', 'Phimprapa', 'Ibarra', 2, '2023-10-04', 'SYSTEM', '2024-12-20 15:54:56', NULL, NULL, 'N'),
+	(71, '000071', 'นาย', 'Mr.', 'เขียว', 'Ford', 'Kheiw', 'Ford', 3, '2021-08-21', 'SYSTEM', '2024-12-20 15:54:56', NULL, NULL, 'N'),
+	(72, '000072', 'นาย', 'Mr.', 'สมหมาย', 'Tucker', 'Sommai', 'Tucker', 1, '2023-06-01', 'SYSTEM', '2024-12-20 15:54:56', NULL, NULL, 'N'),
+	(73, '000073', 'นางสาว', 'Ms.', 'ภัคศุภางค์', 'Robertson', 'Phaksuphang', 'Robertson', 3, '2021-03-11', 'SYSTEM', '2024-12-20 15:54:56', NULL, NULL, 'N'),
+	(74, '000074', 'นางสาว', 'Ms.', 'Stacey', 'Murphy', 'Stacey', 'Murphy', 1, '2024-07-30', 'SYSTEM', '2024-12-20 15:54:56', NULL, NULL, 'N'),
+	(75, '000075', 'นางสาว', 'Ms.', 'Stacy', 'Shaffer', 'Stacy', 'Shaffer', 2, '2021-04-18', 'SYSTEM', '2024-12-20 15:54:56', NULL, NULL, 'N'),
+	(76, '000076', 'นาย', 'Mr.', 'Rhonda', 'ธรรมทินนา', 'Rhonda', 'Thammatinna', 1, '2024-09-05', 'SYSTEM', '2024-12-20 15:54:56', NULL, NULL, 'N'),
+	(77, '000077', 'นางสาว', 'Ms.', 'Andrea', 'เพียยา', 'Andrea', 'Piaya', 2, '2022-04-26', 'SYSTEM', '2024-12-20 15:54:56', NULL, NULL, 'N'),
+	(78, '000078', 'นาง', 'Mrs.', 'จักรพันธ์', 'บุนยาภิสนท์', 'Chakraphan', 'Bunyaphison', 2, '2021-01-13', 'SYSTEM', '2024-12-20 15:54:56', NULL, NULL, 'N'),
+	(79, '000079', 'นางสาว', 'Ms.', 'โกมล', 'Larson', 'Komon', 'Larson', 2, '2022-03-16', 'SYSTEM', '2024-12-20 15:54:56', NULL, NULL, 'N'),
+	(80, '000080', 'นางสาว', 'Ms.', 'วรนาฎ', 'ถนัดอาวุธ', 'Woranat', 'Thanadarwut', 1, '2020-10-27', 'SYSTEM', '2024-12-20 15:54:56', NULL, NULL, 'N'),
+	(81, '000081', 'นางสาว', 'Ms.', 'Tanner', 'Contreras', 'Tanner', 'Contreras', 1, '2022-04-29', 'SYSTEM', '2024-12-20 15:54:56', NULL, NULL, 'N'),
+	(82, '000082', 'นาย', 'Mr.', 'Omar', 'ถนอมพล', 'Omar', 'Thanomphon', 1, '2024-07-26', 'SYSTEM', '2024-12-20 15:54:56', NULL, NULL, 'N'),
+	(83, '000083', 'นาย', 'Mr.', 'Deborah', 'ดาวอร่าม', 'Deborah', 'Dawaram', 2, '2021-01-30', 'SYSTEM', '2024-12-20 15:54:56', NULL, NULL, 'N'),
+	(84, '000084', 'นาง', 'Mrs.', 'มารุด', 'French', 'Marud', 'French', 2, '2021-06-04', 'SYSTEM', '2024-12-20 15:54:56', NULL, NULL, 'N'),
+	(85, '000085', 'นาย', 'Mr.', 'ศรีสวัสดิ์', 'ขำเอนก', 'Srisawat', 'Khumanaek', 4, '2022-10-05', 'SYSTEM', '2024-12-20 15:54:56', NULL, NULL, 'N'),
+	(86, '000086', 'นางสาว', 'Ms.', 'Valerie', 'Chapman', 'Valerie', 'Chapman', 1, '2021-03-09', 'SYSTEM', '2024-12-20 15:54:56', NULL, NULL, 'N'),
+	(87, '000087', 'นาง', 'Mrs.', 'Jeffrey', 'Sullivan', 'Jeffrey', 'Sullivan', 1, '2023-12-28', 'SYSTEM', '2024-12-20 15:54:56', NULL, NULL, 'N'),
+	(88, '000088', 'นางสาว', 'Ms.', 'เกษมชัย', 'Roman', 'Kasemchai', 'Roman', 1, '2024-04-05', 'SYSTEM', '2024-12-20 15:54:56', NULL, NULL, 'N'),
+	(89, '000089', 'นาย', 'Mr.', 'นัสรุน', 'Mayo', 'Nasrun', 'Mayo', 2, '2022-10-26', 'SYSTEM', '2024-12-20 15:54:56', NULL, NULL, 'N'),
+	(90, '000090', 'นาง', 'Mrs.', 'กวาง', 'Ray', 'Kwang', 'Ray', 3, '2020-11-10', 'SYSTEM', '2024-12-20 15:54:56', NULL, NULL, 'N'),
+	(91, '000091', 'นาย', 'Mr.', 'มูฮัมหมัดอิมรอน', 'Cook', 'Muhammad Imran', 'Cook', 1, '2023-07-18', 'SYSTEM', '2024-12-20 15:54:56', NULL, NULL, 'N'),
+	(92, '000092', 'นาย', 'Mr.', 'Richard', 'ถาวรายุศม์', 'Richard', 'Thaworayut', 1, '2023-12-06', 'SYSTEM', '2024-12-20 15:54:56', NULL, NULL, 'N'),
+	(93, '000093', 'นาย', 'Mr.', 'Robert', 'Bauer', 'Robert', 'Bauer', 1, '2024-11-28', 'SYSTEM', '2024-12-20 15:54:57', NULL, NULL, 'N'),
+	(94, '000094', 'นางสาว', 'Ms.', 'ธีร์ธวันาย', 'ถนัดอาวุธ', 'Theerthawanai', 'Thanadarwut', 1, '2024-05-23', 'SYSTEM', '2024-12-20 15:54:57', NULL, NULL, 'N'),
+	(95, '000095', 'นางสาว', 'Ms.', 'แกมแพร', 'นานายน', 'Gamprae', 'Nanayon', 1, '2024-02-17', 'SYSTEM', '2024-12-20 15:54:57', NULL, NULL, 'N'),
+	(96, '000096', 'นาง', 'Mrs.', 'สมนึก', 'Marshall', 'Somnuk', 'Marshall', 1, '2023-05-18', 'SYSTEM', '2024-12-20 15:54:57', NULL, NULL, 'N'),
+	(97, '000097', 'นางสาว', 'Ms.', 'Sherry', 'Cox', 'Sherry', 'Cox', 2, '2022-05-25', 'SYSTEM', '2024-12-20 15:54:57', NULL, NULL, 'N'),
+	(98, '000098', 'นาง', 'Mrs.', 'Benjamin', 'Weaver', 'Benjamin', 'Weaver', 1, '2023-01-17', 'SYSTEM', '2024-12-20 15:54:57', NULL, NULL, 'N'),
+	(99, '000099', 'นาง', 'Mrs.', 'Cindy', 'พานเกล้า', 'Cindy', 'Phan Klao', 2, '2023-06-16', 'SYSTEM', '2024-12-20 15:54:57', NULL, NULL, 'N'),
+	(100, '000100', 'นางสาว', 'Ms.', 'ณิชเชฏฐ์', 'อุ่นอก', 'Nitchaet', 'Aunaok', 1, '2024-07-29', 'SYSTEM', '2024-12-20 15:54:57', NULL, NULL, 'N'),
+	(101, '000101', 'นาง', 'Mrs.', 'มาซีเตาะ', 'Hatfield', 'Masi Tao', 'Hatfield', 1, '2020-10-27', 'SYSTEM', '2024-12-20 15:54:57', NULL, NULL, 'N'),
+	(102, '000102', 'นาย', 'Mr.', 'Kayla', 'White', 'Kayla', 'White', 1, '2024-06-23', 'SYSTEM', '2024-12-20 15:54:57', NULL, NULL, 'N'),
+	(103, '000103', 'นาง', 'Mrs.', 'Joshua', 'ถิรสวัสดิ์', 'Joshua', 'Thirasawat', 3, '2020-02-02', 'SYSTEM', '2024-12-20 15:54:57', NULL, NULL, 'N'),
+	(104, '000104', 'นาย', 'Mr.', 'นันทวุฒิ', 'Willis', 'Nanthawut', 'Willis', 3, '2020-02-02', 'SYSTEM', '2024-12-20 15:54:57', NULL, NULL, 'N'),
+	(105, '000105', 'นาย', 'Mr.', 'James', 'ชำนาญวาด', 'James', 'Chamnanwat', 3, '2021-01-26', 'SYSTEM', '2024-12-20 15:54:57', NULL, NULL, 'N');
 
-INSERT INTO ENT_USER_LOGIN (USER_LOGIN_ID, USERNAME, PASSWORD, EMPLOYEE_ID, CREATED_BY, CREATED_DATE, UPDATED_BY, UPDATED_DATE, IS_DELETED) VALUES(1, 'maker1', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 1, 'SYSTEM', current_timestamp, null, null, 'N');
-INSERT INTO ENT_USER_LOGIN (USER_LOGIN_ID, USERNAME, PASSWORD, EMPLOYEE_ID, CREATED_BY, CREATED_DATE, UPDATED_BY, UPDATED_DATE, IS_DELETED) VALUES(2, 'checker1', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 2, 'SYSTEM', current_timestamp, null, null, 'N');
-INSERT INTO ENT_USER_LOGIN (USER_LOGIN_ID, USERNAME, PASSWORD, EMPLOYEE_ID, CREATED_BY, CREATED_DATE, UPDATED_BY, UPDATED_DATE, IS_DELETED) VALUES(3, 'approver1', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 3, 'SYSTEM', current_timestamp, null, null, 'N');
-INSERT INTO ENT_USER_LOGIN (USER_LOGIN_ID, USERNAME, PASSWORD, EMPLOYEE_ID, CREATED_BY, CREATED_DATE, UPDATED_BY, UPDATED_DATE, IS_DELETED) VALUES(4, 'admin1', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 4, 'SYSTEM', current_timestamp, null, null, 'N');
+INSERT INTO `ENT_USER_LOGIN` (`USER_LOGIN_ID`, `USERNAME`, `PASSWORD`, `EMPLOYEE_ID`, `STATUS`, `CREATED_BY`, `CREATED_DATE`, `UPDATED_BY`, `UPDATED_DATE`, `IS_DELETED`) VALUES
+	(1, 'maker1', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 1, 'Active', 'SYSTEM', '2024-12-19 18:14:03', NULL, NULL, 'N'),
+	(2, 'checker1', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 2, 'Active', 'SYSTEM', '2024-12-19 18:14:03', NULL, NULL, 'N'),
+	(3, 'approver1', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 3, 'Active', 'SYSTEM', '2024-12-19 18:14:04', NULL, NULL, 'N'),
+	(4, 'admin1', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 4, 'Active', 'SYSTEM', '2024-12-19 18:14:04', NULL, NULL, 'N'),
+	(5, 'putthipong.bun', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 5, 'Active', 'SYSTEM', '2024-12-21 22:51:50', NULL, NULL, 'N'),
+	(6, 'alexander.saj', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 6, 'Active', 'SYSTEM', '2024-12-21 22:51:50', NULL, NULL, 'N'),
+	(7, 'somkiat.cha', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 7, 'Lock', 'SYSTEM', '2024-12-21 22:51:50', NULL, NULL, 'N'),
+	(8, 'jacqueline.jon', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 8, 'Active', 'SYSTEM', '2024-12-21 22:51:50', NULL, NULL, 'N'),
+	(9, 'schmidt.nat', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 9, 'Active', 'SYSTEM', '2024-12-21 22:51:50', NULL, NULL, 'N'),
+	(10, 'astha.tha', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 10, 'Lock', 'SYSTEM', '2024-12-21 22:51:50', NULL, NULL, 'N'),
+	(11, 'jeffrey.riv', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 11, 'Lock', 'SYSTEM', '2024-12-21 22:52:07', NULL, NULL, 'N'),
+	(12, 'mckee.kad', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 12, 'Inactive', 'SYSTEM', '2024-12-21 22:52:07', NULL, NULL, 'N'),
+	(13, 'daniel.thn', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 13, 'Active', 'SYSTEM', '2024-12-21 22:52:07', NULL, NULL, 'N'),
+	(14, 'sandra.she', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 14, 'Active', 'SYSTEM', '2024-12-21 22:52:07', NULL, NULL, 'N'),
+	(15, 'withi.bun', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 15, 'Active', 'SYSTEM', '2024-12-21 22:52:07', NULL, NULL, 'N'),
+	(16, 'rachan.pha', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 16, 'Active', 'SYSTEM', '2024-12-21 22:52:07', NULL, NULL, 'N'),
+	(17, 'withi.ree', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 17, 'Active', 'SYSTEM', '2024-12-21 22:52:07', NULL, NULL, 'N'),
+	(18, 'jessica.all', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 18, 'Active', 'SYSTEM', '2024-12-21 22:52:07', NULL, NULL, 'N'),
+	(19, 'thompson.fir', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 19, 'Lock', 'SYSTEM', '2024-12-21 22:52:07', NULL, NULL, 'N'),
+	(20, 'pheypunsa.tha', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 20, 'Inactive', 'SYSTEM', '2024-12-21 22:52:07', NULL, NULL, 'N'),
+	(21, 'rivera.sir', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 21, 'Active', 'SYSTEM', '2024-12-21 22:52:07', NULL, NULL, 'N'),
+	(22, 'thelingyot.wat', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 22, 'Active', 'SYSTEM', '2024-12-21 22:52:07', NULL, NULL, 'N'),
+	(23, 'arisara.cox', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 23, 'Active', 'SYSTEM', '2024-12-21 22:52:07', NULL, NULL, 'N'),
+	(24, 'komkrib.gar', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 24, 'Active', 'SYSTEM', '2024-12-21 22:52:07', NULL, NULL, 'N'),
+	(25, 'yupha.nag', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 25, 'Active', 'SYSTEM', '2024-12-21 22:52:07', NULL, NULL, 'N'),
+	(26, 'wesley.jen', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 26, 'Active', 'SYSTEM', '2024-12-21 22:52:07', NULL, NULL, 'N'),
+	(27, 'rachan.tha', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 27, 'Active', 'SYSTEM', '2024-12-21 22:52:07', NULL, NULL, 'N'),
+	(28, 'tammy.tha', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 28, 'Lock', 'SYSTEM', '2024-12-21 22:52:07', NULL, NULL, 'N'),
+	(29, 'raseeda.spe', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 29, 'Lock', 'SYSTEM', '2024-12-21 22:52:07', NULL, NULL, 'N'),
+	(30, 'hameeya.hug', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 30, 'Active', 'SYSTEM', '2024-12-21 22:52:07', NULL, NULL, 'N'),
+	(31, 'natalie.fra', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 31, 'Active', 'SYSTEM', '2024-12-21 22:52:07', NULL, NULL, 'N'),
+	(32, 'muhammad.med', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 32, 'Inactive', 'SYSTEM', '2024-12-21 22:52:07', NULL, NULL, 'N'),
+	(33, 'kitiwat.cha', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 33, 'Active', 'SYSTEM', '2024-12-21 22:52:07', NULL, NULL, 'N'),
+	(34, 'brett.mid', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 34, 'Active', 'SYSTEM', '2024-12-21 22:52:07', NULL, NULL, 'N'),
+	(35, 'amy.her', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 35, 'Active', 'SYSTEM', '2024-12-21 22:52:07', NULL, NULL, 'N'),
+	(36, 'thomas.tan', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 36, 'Active', 'SYSTEM', '2024-12-21 22:52:07', NULL, NULL, 'N'),
+	(37, 'wirawat.vil', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 37, 'Active', 'SYSTEM', '2024-12-21 22:52:07', NULL, NULL, 'N'),
+	(38, 'jim.bro', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 38, 'Lock', 'SYSTEM', '2024-12-21 22:52:07', NULL, NULL, 'N'),
+	(39, 'kawichatt.boo', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 39, 'Active', 'SYSTEM', '2024-12-21 22:52:07', NULL, NULL, 'N'),
+	(40, 'teresa.dha', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 40, 'Active', 'SYSTEM', '2024-12-21 22:52:07', NULL, NULL, 'N'),
+	(41, 'oscar.nae', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 41, 'Inactive', 'SYSTEM', '2024-12-21 22:52:07', NULL, NULL, 'N'),
+	(42, 'pramint.tur', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 42, 'Active', 'SYSTEM', '2024-12-21 22:52:07', NULL, NULL, 'N'),
+	(43, 'chanyanunai.nel', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 43, 'Active', 'SYSTEM', '2024-12-21 22:52:07', NULL, NULL, 'N'),
+	(44, 'thanawan.mad', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 44, 'Lock', 'SYSTEM', '2024-12-21 22:52:08', NULL, NULL, 'N'),
+	(45, 'chanyaporn.gib', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 45, 'Active', 'SYSTEM', '2024-12-21 22:52:08', NULL, NULL, 'N'),
+	(46, 'theling.roa', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 46, 'Lock', 'SYSTEM', '2024-12-21 22:52:08', NULL, NULL, 'N'),
+	(47, 'yot.ach', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 47, 'Active', 'SYSTEM', '2024-12-21 22:52:08', NULL, NULL, 'N'),
+	(48, 'kelsey.moo', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 48, 'Active', 'SYSTEM', '2024-12-21 22:52:08', NULL, NULL, 'N'),
+	(49, 'chad.raj', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 49, 'Active', 'SYSTEM', '2024-12-21 22:52:08', NULL, NULL, 'N'),
+	(50, 'sarah.wil', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 50, 'Active', 'SYSTEM', '2024-12-21 22:52:08', NULL, NULL, 'N'),
+	(51, 'john.thi', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 51, 'Active', 'SYSTEM', '2024-12-21 22:52:08', NULL, NULL, 'N'),
+	(52, 'sommai.pat', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 52, 'Lock', 'SYSTEM', '2024-12-21 22:52:08', NULL, NULL, 'N'),
+	(53, 'brittany.nae', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 53, 'Active', 'SYSTEM', '2024-12-21 22:52:08', NULL, NULL, 'N'),
+	(54, 'brian.jam', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 54, 'Active', 'SYSTEM', '2024-12-21 22:52:08', NULL, NULL, 'N'),
+	(55, 'andre.mor', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 55, 'Active', 'SYSTEM', '2024-12-21 22:52:08', NULL, NULL, 'N'),
+	(56, 'melanie.zam', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 56, 'Inactive', 'SYSTEM', '2024-12-21 22:52:08', NULL, NULL, 'N'),
+	(57, 'worasat.nam', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 57, 'Active', 'SYSTEM', '2024-12-21 22:52:08', NULL, NULL, 'N'),
+	(58, 'phonphum.tho', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 58, 'Active', 'SYSTEM', '2024-12-21 22:52:08', NULL, NULL, 'N'),
+	(59, 'thanakit.whi', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 59, 'Active', 'SYSTEM', '2024-12-21 22:52:08', NULL, NULL, 'N'),
+	(60, 'thamonphan.tan', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 60, 'Active', 'SYSTEM', '2024-12-21 22:52:08', NULL, NULL, 'N'),
+	(61, 'paul.dou', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 61, 'Active', 'SYSTEM', '2024-12-21 22:52:08', NULL, NULL, 'N'),
+	(62, 'matthew.thu', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 62, 'Active', 'SYSTEM', '2024-12-21 22:52:08', NULL, NULL, 'N'),
+	(63, 'kulchet.boo', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 63, 'Lock', 'SYSTEM', '2024-12-21 22:52:08', NULL, NULL, 'N'),
+	(64, 'ashley.hna', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 64, 'Active', 'SYSTEM', '2024-12-21 22:52:08', NULL, NULL, 'N'),
+	(65, 'somjai.ros', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 65, 'Active', 'SYSTEM', '2024-12-21 22:52:08', NULL, NULL, 'N'),
+	(66, 'phongnares.nir', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 66, 'Active', 'SYSTEM', '2024-12-21 22:52:08', NULL, NULL, 'N'),
+	(67, 'daruni.mil', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 67, 'Active', 'SYSTEM', '2024-12-21 22:52:08', NULL, NULL, 'N'),
+	(68, 'chariyachat.pan', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 68, 'Active', 'SYSTEM', '2024-12-21 22:52:08', NULL, NULL, 'N'),
+	(69, 'anne.new', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 69, 'Active', 'SYSTEM', '2024-12-21 22:52:08', NULL, NULL, 'N'),
+	(70, 'phimprapa.iba', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 70, 'Active', 'SYSTEM', '2024-12-21 22:52:08', NULL, NULL, 'N'),
+	(71, 'kheiw.for', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 71, 'Inactive', 'SYSTEM', '2024-12-21 22:52:08', NULL, NULL, 'N'),
+	(72, 'sommai.tuc', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 72, 'Lock', 'SYSTEM', '2024-12-21 22:52:08', NULL, NULL, 'N'),
+	(73, 'phaksuphang.rob', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 73, 'Active', 'SYSTEM', '2024-12-21 22:52:08', NULL, NULL, 'N'),
+	(74, 'stacey.mur', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 74, 'Active', 'SYSTEM', '2024-12-21 22:52:08', NULL, NULL, 'N'),
+	(75, 'stacy.sha', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 75, 'Active', 'SYSTEM', '2024-12-21 22:52:08', NULL, NULL, 'N'),
+	(76, 'rhonda.tha', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 76, 'Active', 'SYSTEM', '2024-12-21 22:52:08', NULL, NULL, 'N'),
+	(77, 'andrea.pia', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 77, 'Active', 'SYSTEM', '2024-12-21 22:52:08', NULL, NULL, 'N'),
+	(78, 'chakraphan.bun', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 78, 'Active', 'SYSTEM', '2024-12-21 22:52:08', NULL, NULL, 'N'),
+	(79, 'komon.lar', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 79, 'Active', 'SYSTEM', '2024-12-21 22:52:08', NULL, NULL, 'N'),
+	(80, 'woranat.tha', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 80, 'Active', 'SYSTEM', '2024-12-21 22:52:08', NULL, NULL, 'N'),
+	(81, 'tanner.con', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 81, 'Active', 'SYSTEM', '2024-12-21 22:52:08', NULL, NULL, 'N'),
+	(82, 'omar.tha', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 82, 'Lock', 'SYSTEM', '2024-12-21 22:52:08', NULL, NULL, 'N'),
+	(83, 'deborah.daw', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 83, 'Lock', 'SYSTEM', '2024-12-21 22:52:08', NULL, NULL, 'N'),
+	(84, 'marud.fre', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 84, 'Active', 'SYSTEM', '2024-12-21 22:52:08', NULL, NULL, 'N'),
+	(85, 'srisawat.khu', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 85, 'Active', 'SYSTEM', '2024-12-21 22:52:08', NULL, NULL, 'N'),
+	(86, 'valerie.cha', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 86, 'Active', 'SYSTEM', '2024-12-21 22:52:08', NULL, NULL, 'N'),
+	(87, 'jeffrey.sul', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 87, 'Active', 'SYSTEM', '2024-12-21 22:52:08', NULL, NULL, 'N'),
+	(88, 'kasemchai.rom', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 88, 'Active', 'SYSTEM', '2024-12-21 22:52:08', NULL, NULL, 'N'),
+	(89, 'nasrun.may', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 89, 'Active', 'SYSTEM', '2024-12-21 22:52:08', NULL, NULL, 'N'),
+	(90, 'kwang.ray', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 90, 'Active', 'SYSTEM', '2024-12-21 22:52:08', NULL, NULL, 'N'),
+	(91, 'muhammad.cook', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 91, 'Active', 'SYSTEM', '2024-12-21 22:52:08', NULL, NULL, 'N'),
+	(92, 'richard.tha', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 92, 'Lock', 'SYSTEM', '2024-12-21 22:52:08', NULL, NULL, 'N'),
+	(93, 'robert.bau', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 93, 'Active', 'SYSTEM', '2024-12-21 22:52:08', NULL, NULL, 'N'),
+	(94, 'theerthawanai.tha', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 94, 'Active', 'SYSTEM', '2024-12-21 22:52:08', NULL, NULL, 'N'),
+	(95, 'gamprae.nan', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 95, 'Active', 'SYSTEM', '2024-12-21 22:52:08', NULL, NULL, 'N'),
+	(96, 'somnuk.mar', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 96, 'Active', 'SYSTEM', '2024-12-21 22:52:08', NULL, NULL, 'N'),
+	(97, 'sherry.cox', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 97, 'Active', 'SYSTEM', '2024-12-21 22:52:08', NULL, NULL, 'N'),
+	(98, 'benjamin.wea', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 98, 'Active', 'SYSTEM', '2024-12-21 22:52:08', NULL, NULL, 'N'),
+	(99, 'cindy.pha', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 99, 'Active', 'SYSTEM', '2024-12-21 22:52:08', NULL, NULL, 'N'),
+	(100, 'nitchaet.aun', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 100, 'Active', 'SYSTEM', '2024-12-21 22:52:08', NULL, NULL, 'N'),
+	(101, 'masitao.hat', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 101, 'Active', 'SYSTEM', '2024-12-21 22:52:08', NULL, NULL, 'N'),
+	(102, 'kayla.whi', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 102, 'Lock', 'SYSTEM', '2024-12-21 22:52:08', NULL, NULL, 'N'),
+	(103, 'joshua.thi', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 103, 'Lock', 'SYSTEM', '2024-12-21 22:52:08', NULL, NULL, 'N'),
+	(104, 'nanthawut.wil', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 104, 'Active', 'SYSTEM', '2024-12-21 22:52:08', NULL, NULL, 'N'),
+	(105, 'james.cha', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 105, 'Active', 'SYSTEM', '2024-12-21 22:52:08', NULL, NULL, 'N');
 
-INSERT INTO MAS_PERMISSION_ACTION (PERMISSION_ACTION_ID, PERMISSION_ACTION_NO, PERMISSION_ACTION_NAME, CREATED_BY, CREATED_DATE, UPDATED_BY, UPDATED_DATE, IS_DELETED) VALUES(1, '01', 'Create', 'SYSTEM', current_timestamp, null, null, 'N');
-INSERT INTO MAS_PERMISSION_ACTION (PERMISSION_ACTION_ID, PERMISSION_ACTION_NO, PERMISSION_ACTION_NAME, CREATED_BY, CREATED_DATE, UPDATED_BY, UPDATED_DATE, IS_DELETED) VALUES(2, '02', 'View', 'SYSTEM', current_timestamp, null, null, 'N');
-INSERT INTO MAS_PERMISSION_ACTION (PERMISSION_ACTION_ID, PERMISSION_ACTION_NO, PERMISSION_ACTION_NAME, CREATED_BY, CREATED_DATE, UPDATED_BY, UPDATED_DATE, IS_DELETED) VALUES(3, '03', 'Edit', 'SYSTEM', current_timestamp, null, null, 'N');
-INSERT INTO MAS_PERMISSION_ACTION (PERMISSION_ACTION_ID, PERMISSION_ACTION_NO, PERMISSION_ACTION_NAME, CREATED_BY, CREATED_DATE, UPDATED_BY, UPDATED_DATE, IS_DELETED) VALUES(4, '04', 'Search', 'SYSTEM', current_timestamp, null, null, 'N');
-INSERT INTO MAS_PERMISSION_ACTION (PERMISSION_ACTION_ID, PERMISSION_ACTION_NO, PERMISSION_ACTION_NAME, CREATED_BY, CREATED_DATE, UPDATED_BY, UPDATED_DATE, IS_DELETED) VALUES(5, '05', 'Approve', 'SYSTEM', current_timestamp, null, null, 'N');
-INSERT INTO MAS_PERMISSION_ACTION (PERMISSION_ACTION_ID, PERMISSION_ACTION_NO, PERMISSION_ACTION_NAME, CREATED_BY, CREATED_DATE, UPDATED_BY, UPDATED_DATE, IS_DELETED) VALUES(6, '06', 'Export Report', 'SYSTEM', current_timestamp, null, null, 'N');
+INSERT INTO `MAS_MENU` (`MENU_ID`, `MENU_NO`, `MENU_NAME`, `CREATED_BY`, `CREATED_DATE`, `UPDATED_BY`, `UPDATED_DATE`, `IS_DELETED`) VALUES
+	(1, '001', 'Create Loan', 'SYSTEM', '2024-12-19 21:57:45', NULL, NULL, 'N'),
+	(2, '002', 'Approve Loan', 'SYSTEM', '2024-12-19 21:57:45', NULL, NULL, 'N'),
+	(3, '003', 'User Management', 'SYSTEM', '2024-12-19 21:57:45', NULL, NULL, 'N'),
+	(4, '004', 'Role Management', 'SYSTEM', '2024-12-19 21:57:45', NULL, NULL, 'N'),
+	(5, '005', 'Permission Management', 'SYSTEM', '2024-12-19 21:57:45', NULL, NULL, 'N');
 
-INSERT INTO MAS_MENU (MENU_ID, MENU_NO, MENU_NAME, CREATED_BY, CREATED_DATE, UPDATED_BY, UPDATED_DATE, IS_DELETED) VALUES(1, '001', 'Create Loan', 'SYSTEM', current_timestamp, null, null, 'N');
-INSERT INTO MAS_MENU (MENU_ID, MENU_NO, MENU_NAME, CREATED_BY, CREATED_DATE, UPDATED_BY, UPDATED_DATE, IS_DELETED) VALUES(2, '002', 'Approve Loan', 'SYSTEM', current_timestamp, null, null, 'N');
-INSERT INTO MAS_MENU (MENU_ID, MENU_NO, MENU_NAME, CREATED_BY, CREATED_DATE, UPDATED_BY, UPDATED_DATE, IS_DELETED) VALUES(3, '003', 'User Management', 'SYSTEM', current_timestamp, null, null, 'N');
-INSERT INTO MAS_MENU (MENU_ID, MENU_NO, MENU_NAME, CREATED_BY, CREATED_DATE, UPDATED_BY, UPDATED_DATE, IS_DELETED) VALUES(4, '004', 'Role Management', 'SYSTEM', current_timestamp, null, null, 'N');
-INSERT INTO MAS_MENU (MENU_ID, MENU_NO, MENU_NAME, CREATED_BY, CREATED_DATE, UPDATED_BY, UPDATED_DATE, IS_DELETED) VALUES(5, '005', 'Permission Management', 'SYSTEM', current_timestamp, null, null, 'N');
+INSERT INTO `MAS_PERMISSION_ACTION` (`PERMISSION_ACTION_ID`, `PERMISSION_ACTION_NO`, `PERMISSION_ACTION_NAME`, `CREATED_BY`, `CREATED_DATE`, `UPDATED_BY`, `UPDATED_DATE`, `IS_DELETED`) VALUES
+	(1, '01', 'Create', 'SYSTEM', '2024-12-19 21:57:34', NULL, NULL, 'N'),
+	(2, '02', 'View', 'SYSTEM', '2024-12-19 21:57:34', NULL, NULL, 'N'),
+	(3, '03', 'Edit', 'SYSTEM', '2024-12-19 21:57:34', NULL, NULL, 'N'),
+	(4, '04', 'Search', 'SYSTEM', '2024-12-19 21:57:34', NULL, NULL, 'N'),
+	(5, '05', 'Approve', 'SYSTEM', '2024-12-19 21:57:34', NULL, NULL, 'N'),
+	(6, '06', 'Export Report', 'SYSTEM', '2024-12-19 21:57:34', NULL, NULL, 'N');
 
-INSERT INTO MAS_INITIAL_PERMISSION (INITIAL_PERMISSION_ID, MENU_ID, PERMISSION_ACTION_ID, CREATED_BY, CREATED_DATE, UPDATED_BY, UPDATED_DATE, IS_DELETED) VALUES(1, 1, 1, 'SYSTEM', current_timestamp, null, null, 'N');
-INSERT INTO MAS_INITIAL_PERMISSION (INITIAL_PERMISSION_ID, MENU_ID, PERMISSION_ACTION_ID, CREATED_BY, CREATED_DATE, UPDATED_BY, UPDATED_DATE, IS_DELETED) VALUES(2, 1, 2, 'SYSTEM', current_timestamp, null, null, 'N');
-INSERT INTO MAS_INITIAL_PERMISSION (INITIAL_PERMISSION_ID, MENU_ID, PERMISSION_ACTION_ID, CREATED_BY, CREATED_DATE, UPDATED_BY, UPDATED_DATE, IS_DELETED) VALUES(3, 1, 3, 'SYSTEM', current_timestamp, null, null, 'N');
-INSERT INTO MAS_INITIAL_PERMISSION (INITIAL_PERMISSION_ID, MENU_ID, PERMISSION_ACTION_ID, CREATED_BY, CREATED_DATE, UPDATED_BY, UPDATED_DATE, IS_DELETED) VALUES(4, 1, 4, 'SYSTEM', current_timestamp, null, null, 'N');
-INSERT INTO MAS_INITIAL_PERMISSION (INITIAL_PERMISSION_ID, MENU_ID, PERMISSION_ACTION_ID, CREATED_BY, CREATED_DATE, UPDATED_BY, UPDATED_DATE, IS_DELETED) VALUES(5, 2, 2, 'SYSTEM', current_timestamp, null, null, 'N');
-INSERT INTO MAS_INITIAL_PERMISSION (INITIAL_PERMISSION_ID, MENU_ID, PERMISSION_ACTION_ID, CREATED_BY, CREATED_DATE, UPDATED_BY, UPDATED_DATE, IS_DELETED) VALUES(6, 2, 4, 'SYSTEM', current_timestamp, null, null, 'N');
-INSERT INTO MAS_INITIAL_PERMISSION (INITIAL_PERMISSION_ID, MENU_ID, PERMISSION_ACTION_ID, CREATED_BY, CREATED_DATE, UPDATED_BY, UPDATED_DATE, IS_DELETED) VALUES(7, 2, 5, 'SYSTEM', current_timestamp, null, null, 'N');
-INSERT INTO MAS_INITIAL_PERMISSION (INITIAL_PERMISSION_ID, MENU_ID, PERMISSION_ACTION_ID, CREATED_BY, CREATED_DATE, UPDATED_BY, UPDATED_DATE, IS_DELETED) VALUES(8, 2, 6, 'SYSTEM', current_timestamp, null, null, 'N');
-INSERT INTO MAS_INITIAL_PERMISSION (INITIAL_PERMISSION_ID, MENU_ID, PERMISSION_ACTION_ID, CREATED_BY, CREATED_DATE, UPDATED_BY, UPDATED_DATE, IS_DELETED) VALUES(9, 3, 1, 'SYSTEM', current_timestamp, null, null, 'N');
-INSERT INTO MAS_INITIAL_PERMISSION (INITIAL_PERMISSION_ID, MENU_ID, PERMISSION_ACTION_ID, CREATED_BY, CREATED_DATE, UPDATED_BY, UPDATED_DATE, IS_DELETED) VALUES(10, 3, 2, 'SYSTEM', current_timestamp, null, null, 'N');
-INSERT INTO MAS_INITIAL_PERMISSION (INITIAL_PERMISSION_ID, MENU_ID, PERMISSION_ACTION_ID, CREATED_BY, CREATED_DATE, UPDATED_BY, UPDATED_DATE, IS_DELETED) VALUES(11, 3, 3, 'SYSTEM', current_timestamp, null, null, 'N');
-INSERT INTO MAS_INITIAL_PERMISSION (INITIAL_PERMISSION_ID, MENU_ID, PERMISSION_ACTION_ID, CREATED_BY, CREATED_DATE, UPDATED_BY, UPDATED_DATE, IS_DELETED) VALUES(12, 3, 4, 'SYSTEM', current_timestamp, null, null, 'N');
-INSERT INTO MAS_INITIAL_PERMISSION (INITIAL_PERMISSION_ID, MENU_ID, PERMISSION_ACTION_ID, CREATED_BY, CREATED_DATE, UPDATED_BY, UPDATED_DATE, IS_DELETED) VALUES(13, 4, 1, 'SYSTEM', current_timestamp, null, null, 'N');
-INSERT INTO MAS_INITIAL_PERMISSION (INITIAL_PERMISSION_ID, MENU_ID, PERMISSION_ACTION_ID, CREATED_BY, CREATED_DATE, UPDATED_BY, UPDATED_DATE, IS_DELETED) VALUES(14, 4, 2, 'SYSTEM', current_timestamp, null, null, 'N');
-INSERT INTO MAS_INITIAL_PERMISSION (INITIAL_PERMISSION_ID, MENU_ID, PERMISSION_ACTION_ID, CREATED_BY, CREATED_DATE, UPDATED_BY, UPDATED_DATE, IS_DELETED) VALUES(15, 4, 3, 'SYSTEM', current_timestamp, null, null, 'N');
-INSERT INTO MAS_INITIAL_PERMISSION (INITIAL_PERMISSION_ID, MENU_ID, PERMISSION_ACTION_ID, CREATED_BY, CREATED_DATE, UPDATED_BY, UPDATED_DATE, IS_DELETED) VALUES(16, 4, 4, 'SYSTEM', current_timestamp, null, null, 'N');
-INSERT INTO MAS_INITIAL_PERMISSION (INITIAL_PERMISSION_ID, MENU_ID, PERMISSION_ACTION_ID, CREATED_BY, CREATED_DATE, UPDATED_BY, UPDATED_DATE, IS_DELETED) VALUES(17, 5, 1, 'SYSTEM', current_timestamp, null, null, 'N');
-INSERT INTO MAS_INITIAL_PERMISSION (INITIAL_PERMISSION_ID, MENU_ID, PERMISSION_ACTION_ID, CREATED_BY, CREATED_DATE, UPDATED_BY, UPDATED_DATE, IS_DELETED) VALUES(18, 5, 2, 'SYSTEM', current_timestamp, null, null, 'N');
-INSERT INTO MAS_INITIAL_PERMISSION (INITIAL_PERMISSION_ID, MENU_ID, PERMISSION_ACTION_ID, CREATED_BY, CREATED_DATE, UPDATED_BY, UPDATED_DATE, IS_DELETED) VALUES(19, 5, 3, 'SYSTEM', current_timestamp, null, null, 'N');
-INSERT INTO MAS_INITIAL_PERMISSION (INITIAL_PERMISSION_ID, MENU_ID, PERMISSION_ACTION_ID, CREATED_BY, CREATED_DATE, UPDATED_BY, UPDATED_DATE, IS_DELETED) VALUES(20, 5, 4, 'SYSTEM', current_timestamp, null, null, 'N');
+INSERT INTO `MAP_ROLE_PERMISSION` (`ROLE_PERMISSION_ID`, `ROLE_ID`, `MENU_ID`, `PERMISSION_ACTION_ID`, `CREATED_BY`, `CREATED_DATE`, `UPDATED_BY`, `UPDATED_DATE`, `IS_DELETED`) VALUES
+	(1, 4, 5, 1, 'SYSTEM', '2024-12-19 21:58:10', NULL, NULL, 'N'),
+	(2, 4, 5, 2, 'SYSTEM', '2024-12-19 21:58:10', NULL, NULL, 'N'),
+	(3, 4, 5, 3, 'SYSTEM', '2024-12-19 21:58:10', NULL, NULL, 'N'),
+	(4, 4, 5, 4, 'SYSTEM', '2024-12-19 21:58:10', NULL, NULL, 'N'),
+	(6, 4, 3, 4, 'SYSTEM', '2024-12-24 13:04:55', NULL, NULL, 'N');
 
-INSERT INTO MAP_ROLE_PERMISSION (ROLE_ID, MENU_ID, PERMISSION_ACTION_ID, CREATED_BY, CREATED_DATE, UPDATED_BY, UPDATED_DATE, IS_DELETED) VALUES(4, 5, 1, 'SYSTEM', current_timestamp, null, null, 'N');
-INSERT INTO MAP_ROLE_PERMISSION (ROLE_ID, MENU_ID, PERMISSION_ACTION_ID, CREATED_BY, CREATED_DATE, UPDATED_BY, UPDATED_DATE, IS_DELETED) VALUES(4, 5, 2, 'SYSTEM', current_timestamp, null, null, 'N');
-INSERT INTO MAP_ROLE_PERMISSION (ROLE_ID, MENU_ID, PERMISSION_ACTION_ID, CREATED_BY, CREATED_DATE, UPDATED_BY, UPDATED_DATE, IS_DELETED) VALUES(4, 5, 3, 'SYSTEM', current_timestamp, null, null, 'N');
-INSERT INTO MAP_ROLE_PERMISSION (ROLE_ID, MENU_ID, PERMISSION_ACTION_ID, CREATED_BY, CREATED_DATE, UPDATED_BY, UPDATED_DATE, IS_DELETED) VALUES(4, 5, 4, 'SYSTEM', current_timestamp, null, null, 'N');
+INSERT INTO `MAS_INITIAL_PERMISSION` (`INITIAL_PERMISSION_ID`, `MENU_ID`, `PERMISSION_ACTION_ID`, `CREATED_BY`, `CREATED_DATE`, `UPDATED_BY`, `UPDATED_DATE`, `IS_DELETED`) VALUES
+	(1, 1, 1, 'SYSTEM', '2024-12-19 21:57:57', NULL, NULL, 'N'),
+	(2, 1, 2, 'SYSTEM', '2024-12-19 21:57:57', NULL, NULL, 'N'),
+	(3, 1, 3, 'SYSTEM', '2024-12-19 21:57:57', NULL, NULL, 'N'),
+	(4, 1, 4, 'SYSTEM', '2024-12-19 21:57:57', NULL, NULL, 'N'),
+	(5, 2, 2, 'SYSTEM', '2024-12-19 21:57:57', NULL, NULL, 'N'),
+	(6, 2, 4, 'SYSTEM', '2024-12-19 21:57:57', NULL, NULL, 'N'),
+	(7, 2, 5, 'SYSTEM', '2024-12-19 21:57:57', NULL, NULL, 'N'),
+	(8, 2, 6, 'SYSTEM', '2024-12-19 21:57:57', NULL, NULL, 'N'),
+	(9, 3, 1, 'SYSTEM', '2024-12-19 21:57:57', NULL, NULL, 'N'),
+	(10, 3, 2, 'SYSTEM', '2024-12-19 21:57:57', NULL, NULL, 'N'),
+	(11, 3, 3, 'SYSTEM', '2024-12-19 21:57:57', NULL, NULL, 'N'),
+	(12, 3, 4, 'SYSTEM', '2024-12-19 21:57:57', NULL, NULL, 'N'),
+	(13, 4, 1, 'SYSTEM', '2024-12-19 21:57:57', NULL, NULL, 'N'),
+	(14, 4, 2, 'SYSTEM', '2024-12-19 21:57:57', NULL, NULL, 'N'),
+	(15, 4, 3, 'SYSTEM', '2024-12-19 21:57:57', NULL, NULL, 'N'),
+	(16, 4, 4, 'SYSTEM', '2024-12-19 21:57:57', NULL, NULL, 'N'),
+	(17, 5, 1, 'SYSTEM', '2024-12-19 21:57:57', NULL, NULL, 'N'),
+	(18, 5, 2, 'SYSTEM', '2024-12-19 21:57:57', NULL, NULL, 'N'),
+	(19, 5, 3, 'SYSTEM', '2024-12-19 21:57:57', NULL, NULL, 'N'),
+	(20, 5, 4, 'SYSTEM', '2024-12-19 21:57:57', NULL, NULL, 'N');

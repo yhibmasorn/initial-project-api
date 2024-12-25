@@ -14,6 +14,7 @@ import yms.api.model.Menu;
 import yms.api.model.PermissionAction;
 import yms.api.model.Role;
 import yms.api.model.RolePermission;
+import yms.api.model.request.GetPermissionRequest;
 import yms.api.model.response.GetPermissionResponse;
 import yms.api.repository.MenuRepository;
 import yms.api.repository.PermissionActionRepository;

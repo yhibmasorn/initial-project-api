@@ -33,8 +33,8 @@ public class SessionRepositoryTest {
 		sessionRepository.setJdbcTemplate(jdbcTemplate);
 		
 		jdbcTemplate.update("INSERT INTO ENT_ROLE (ROLE_ID, ROLE_NO, ROLE_NAME, CREATED_BY, CREATED_DATE, UPDATED_BY, UPDATED_DATE, IS_DELETED) VALUES(9999, '999', 'Test Role', 'SYSTEM', current_timestamp, null, null, 'N')");
-		jdbcTemplate.update("INSERT INTO ENT_EMPLOYEE (EMPLOYEE_ID, EMPLOYEE_NO, FIRSTNAME, LASTNAME, ROLE_ID, CREATED_BY, CREATED_DATE, UPDATED_BY, UPDATED_DATE, IS_DELETED) VALUES(9999, '999999', 'Test 1', 'Test Lastname 1', 9999, 'SYSTEM', current_timestamp, null, null, 'N')");
-		jdbcTemplate.update("INSERT INTO ENT_USER_LOGIN (USER_LOGIN_ID, USERNAME, PASSWORD, EMPLOYEE_ID, CREATED_BY, CREATED_DATE, UPDATED_BY, UPDATED_DATE, IS_DELETED) VALUES(9999, 'Test_999', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 9999, 'SYSTEM', current_timestamp, null, null, 'N')");
+		jdbcTemplate.update("INSERT INTO ENT_EMPLOYEE (EMPLOYEE_ID, EMPLOYEE_NO, TITLE_TH, TITLE_EN, FIRSTNAME_TH, LASTNAME_TH, FIRSTNAME_EN, LASTNAME_EN, ROLE_ID, WORK_START_DATE, CREATED_BY, CREATED_DATE, UPDATED_BY, UPDATED_DATE, IS_DELETED) VALUES(9999, '999999', 'Mr.', 'Mr.', 'Test 1', 'Test Lastname 1', 'Test 1', 'Test Lastname 1', 9999, '2020-03-01', 'SYSTEM', current_timestamp, null, null, 'N')");
+		jdbcTemplate.update("INSERT INTO ENT_USER_LOGIN (USER_LOGIN_ID, USERNAME, PASSWORD, EMPLOYEE_ID, STATUS, CREATED_BY, CREATED_DATE, UPDATED_BY, UPDATED_DATE, IS_DELETED) VALUES(9999, 'Test_999', '$2a$10$/skGQbcBuTIrscH8L8vX3OhdSwNqBNsP.nNf1T9dStpalqq6vY7eO', 9999, 'Active', 'SYSTEM', current_timestamp, null, null, 'N')");
 		jdbcTemplate.update("INSERT INTO ENT_SESSION (SESSION_ID, USER_LOGIN_ID, EXPIRE_DATE, CREATED_BY, CREATED_DATE, UPDATED_BY, UPDATED_DATE, IS_DELETED) VALUES('Test_9999', 9999, current_timestamp, 'SYSTEM', current_timestamp, null, null, 'N')");
 		
 	}

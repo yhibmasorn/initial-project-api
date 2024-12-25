@@ -8,6 +8,7 @@ public class UserLogin {
 	private String username;
 	private String password;
 	private Employee employee;
+	private String status;
 	private String createdBy;
 	private Date createdDate;
 	private String updatedBy;
@@ -32,7 +33,12 @@ public class UserLogin {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
 	public Date getCreatedDate() {
 		return createdDate;
 	}

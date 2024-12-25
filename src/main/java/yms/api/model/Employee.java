@@ -6,9 +6,14 @@ public class Employee {
 
 	private Integer employeeID;
 	private String employeeNo;
-	private String firstname;
-	private String lastname;
+	private String titleTh;
+	private String titleEn;
+	private String firstnameTh;
+	private String lastnameTh;
+	private String firstnameEn;
+	private String lastnameEn;
 	private Role role;
+	private Date workStartDate;
 	private String createdBy;
 	private Date createdDate;
 	private String updatedBy;
@@ -27,23 +32,53 @@ public class Employee {
 	public void setEmployeeNo(String employeeNo) {
 		this.employeeNo = employeeNo;
 	}
-	public String getFirstname() {
-		return firstname;
+	public String getTitleTh() {
+		return titleTh;
 	}
-	public void setFirstname(String firstname) {
-		this.firstname = firstname;
+	public void setTitleTh(String titleTh) {
+		this.titleTh = titleTh;
 	}
-	public String getLastname() {
-		return lastname;
+	public String getTitleEn() {
+		return titleEn;
 	}
-	public void setLastname(String lastname) {
-		this.lastname = lastname;
+	public void setTitleEn(String titleEn) {
+		this.titleEn = titleEn;
+	}
+	public String getFirstnameTh() {
+		return firstnameTh;
+	}
+	public void setFirstnameTh(String firstnameTh) {
+		this.firstnameTh = firstnameTh;
+	}
+	public String getLastnameTh() {
+		return lastnameTh;
+	}
+	public void setLastnameTh(String lastnameTh) {
+		this.lastnameTh = lastnameTh;
+	}
+	public String getFirstnameEn() {
+		return firstnameEn;
+	}
+	public void setFirstnameEn(String firstnameEn) {
+		this.firstnameEn = firstnameEn;
+	}
+	public String getLastnameEn() {
+		return lastnameEn;
+	}
+	public void setLastnameEn(String lastnameEn) {
+		this.lastnameEn = lastnameEn;
 	}
 	public Role getRole() {
 		return role;
 	}
 	public void setRole(Role role) {
 		this.role = role;
+	}
+	public Date getWorkStartDate() {
+		return workStartDate;
+	}
+	public void setWorkStartDate(Date workStartDate) {
+		this.workStartDate = workStartDate;
 	}
 	public String getCreatedBy() {
 		return createdBy;

@@ -74,13 +74,14 @@ public class UserLoginRepository {
 	
 	public void insert(UserLogin userLogin) {
 		String sql = """
-				INSERT INTO ENT_USER_LOGIN (USERNAME, PASSWORD, EMPLOYEE_ID, CREATED_BY, CREATED_DATE, IS_DELETED) 
-				VALUES(?, ?, ?, ?, ?, ?)
+				INSERT INTO ENT_USER_LOGIN (USERNAME, PASSWORD, EMPLOYEE_ID, STATUS, CREATED_BY, CREATED_DATE, IS_DELETED) 
+				VALUES(?, ?, ?, ?, ?, ?, ?)
 				""";
 		jdbcTemplate.update(sql.toString(), new Object[] {
 				userLogin.getUsername(),
 				userLogin.getPassword(),
 				userLogin.getEmployee().getEmployeeID(),
+				userLogin.getStatus(),
 				userLogin.getCreatedBy(),
 				userLogin.getCreatedDate(),
 				userLogin.getIsDeleted()
@@ -103,8 +104,12 @@ public class UserLoginRepository {
 			
 			employee.setEmployeeID(rs.getInt("EMPLOYEE_ID"));
 			employee.setEmployeeNo(rs.getString("EMPLOYEE_NO"));
-			employee.setFirstname(rs.getString("FIRSTNAME"));
-			employee.setLastname(rs.getString("LASTNAME"));
+			employee.setTitleTh(rs.getString("TITLE_TH"));
+			employee.setTitleEn(rs.getString("TITLE_EN"));
+			employee.setFirstnameTh(rs.getString("FIRSTNAME_TH"));
+			employee.setLastnameTh(rs.getString("LASTNAME_TH"));
+			employee.setFirstnameEn(rs.getString("FIRSTNAME_EN"));
+			employee.setLastnameEn(rs.getString("LASTNAME_EN"));
 			
 			Role role = new Role();
 			role.setRoleID(rs.getInt("ROLE_ID"));
@@ -117,8 +122,10 @@ public class UserLoginRepository {
 			role.setIsDeleted(rs.getString("IS_DELETED"));
 			
 			employee.setRole(role);
+			employee.setWorkStartDate(rs.getDate("WORK_START_DATE"));
 			
 			userLogin.setEmployee(employee);
+			userLogin.setStatus(rs.getString("STATUS"));
 			
 			return userLogin;
 		}
