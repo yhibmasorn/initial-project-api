@@ -156,9 +156,7 @@ public class EmployeeRepository {
 					paramList.add(user.getStatus());
 					
 				}
-				
-				
-				
+
 			}
 			
 		}
@@ -255,9 +253,35 @@ public class EmployeeRepository {
 			}
 			
 			if(user.getStatus() != null && !"".equals(user.getStatus())) {
-				sql.append(" AND  u.STATUS = ? ");
-				paramList.add(user.getStatus());
-				
+				if(user.getStatus().indexOf(",") > -1) {
+					String[] statusArr = user.getStatus().split(",");
+					StringBuilder str = new StringBuilder();
+					
+					sql.append(" AND  u.STATUS in (");
+					
+					for(int i = 0; i < statusArr.length; i++) {
+						if(i == 0) {
+							str.append("?");
+
+						}else {
+							str.append(",");
+							str.append("?");
+							
+						}
+						
+						paramList.add(statusArr[i]);
+						
+					}
+					
+					sql.append(str.toString());
+					sql.append(")");
+					
+				}else {
+					sql.append(" AND  u.STATUS = ? ");
+					paramList.add(user.getStatus());
+					
+				}
+
 			}
 			
 		}
